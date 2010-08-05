@@ -11,11 +11,32 @@ function resize() {
 	draw();
 }
 function draw() {
-	for (var y=0; y<num; y++) {
-		for (var x=0; x<num; x++) {
-			rect(clrs[grid[y][x]],x,y);
-		}
-	}
+	for (var y=0; y<num; y++)
+		for (var x=0; x<num; x++)
+			rect(clrs[grid[y][x]], x, y);
+}
+var chain = [], words = [];
+// Markov chain, with hardcoded order of 3
+function feed(s) {
+    var r = s.split(' ');
+    var l = r.length - 3,t, ret = "", a;
+    // build chain
+    while (--l) {
+        t = r[0] + ' ' + r[1];
+        if (!chain[t]) chain[t] = [];
+        chain[t].push(r[2]);
+        r.shift();
+        words.push(r[2]);
+    }
+    // spit out some words
+    l = 50;
+    while (--l) {
+        t = r[0] + ' ' + r[1];
+        r[0] = r[1];
+        a = t in chain ? chain[t] : words;
+        ret += (r[1] = a[Math.floor(Math.random()*a.length)]) + " ";
+    }
+    return ret;
 }
 $(function() {
 	// initialize canvas
@@ -35,4 +56,8 @@ $(function() {
 	// size up and draw window
 	(win = $(window)).resize(resize);
 	resize();
+	$.get("http://www-users.cs.york.ac.uk/susan/sf/eyeargon/eyeargon.htm", function(data) {
+	    alert(data);
+	    $(".display-centre").html($("pre",data).html());
+	});
 });
