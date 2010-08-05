@@ -56,8 +56,4 @@ $(function() {
 	// size up and draw window
 	(win = $(window)).resize(resize);
 	resize();
-	$.get("http://www-users.cs.york.ac.uk/susan/sf/eyeargon/eyeargon.htm", function(data) {
-	    alert(data);
-	    $(".display-centre").html($("pre",data).html());
-	});
 });
