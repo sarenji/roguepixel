@@ -17,26 +17,21 @@ function draw() {
 }
 var chain = [], words = [];
 // Markov chain, with hardcoded order of 3
+// Optimized for size so hard it nearly becomes unreadable.
 function feed(s) {
-    var r = s.split(' ');
-    var l = r.length - 3,t, ret = "", a;
+    var r = s.split(' '), l = r.length - 3, t, u = "", a;
     // build chain
     while (--l) {
-        t = r[0] + ' ' + r[1];
-        if (!chain[t]) chain[t] = [];
-        chain[t].push(r[2]);
-        r.shift();
-        words.push(r[2]);
+        t = r.shift() + ' ' + r[0];
+        (a=chain[t]=a||[]).push(r[1]);
+        words.push(r[1]);
     }
     // spit out some words
-    l = 50;
-    while (--l) {
-        t = r[0] + ' ' + r[1];
-        r[0] = r[1];
-        a = t in chain ? chain[t] : words;
-        ret += (r[1] = a[Math.floor(Math.random()*a.length)]) + " ";
+    while (--l>-47) {
+        a = chain[r[0] + ' ' + (r[0] = r[1])] || words;
+        u += (r[1] = a[~~(Math.random()*a.length)]) + " ";
     }
-    return ret;
+    return u;
 }
 $(function() {
 	// initialize canvas
