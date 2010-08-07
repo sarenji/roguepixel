@@ -19,11 +19,10 @@ var chain = [], words = [];
 // Markov chain, with hardcoded order of 3
 // Optimized for size so hard it nearly becomes unreadable.
 function feed(s) {
-    var r = s.split(' '), l = r.length - 3, t, u = "", a;
+    var r = s.split(' '), l = r.length - 3, u = "", a;
     // build chain
     while (--l) {
-        t = r.shift() + ' ' + r[0];
-        (a=chain[t]=a||[]).push(r[1]);
+        (a=chain[r.shift() + ' ' + r[0]]=a||[]).push(r[1]);
         words.push(r[1]);
     }
     // spit out some words
